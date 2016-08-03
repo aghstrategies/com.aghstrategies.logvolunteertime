@@ -2,10 +2,15 @@
 
 require_once 'logvolunteertime.civix.php';
 
-function volunteertime_civicrm_permission( &$permissions ){
-  $prefix = ts('Volunteer Permissions') . ': ';
-  $permissions['log own volunteer hours'] = $prefix . ts('log your own volunteer hours'); // NB: note the conventionof using delete in ComponentName, plural for edits
+/**
+ *  Implements logvolunteertime_civicrm_buildForm()
+ */
+function logvolunteertime_civicrm_buildForm($formName, &$form) {
+  if ($formName == "CRM_Logvolunteertime_Form_LogVolHours") {
+    CRM_Core_Resources::singleton()->addScriptFile('com.aghstrategies.logvolunteertime', 'js/hours.js');
+  }
 }
+
 /**
  * Implementation of hook_civicrm_config
  *
