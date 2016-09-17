@@ -74,13 +74,21 @@ class CRM_Logvolunteertime_Form_LogVolHours extends CRM_Core_Form {
       'volunteer_need_text',
       ts('Volunteer Need')
     );
-
+    $this->addRule(
+      'volunteer_need_text',
+      'A Volunteer need is required',
+      'required'
+    );
     $this->add(
       'text',
       'hours_logged',
       ts('Time Volunteered in minutes')
     );
-
+    $this->addRule(
+      'hours_logged',
+      'Please enter time volunterred in minutes',
+      'required'
+    );
     $this->addButtons(array(
       array(
         'type' => 'submit',
