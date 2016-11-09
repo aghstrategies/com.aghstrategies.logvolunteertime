@@ -7,11 +7,11 @@ CRM.$(function ($) {
       }).done(function (result) {
           var needs = result.values;
           $.each(needs, function () {
-var formattedText =  this.role_label + ', ' + this.display_time;
-
+            var formattedText =  this.role_label + ', Time: ' + this.display_time;
             $('<option />', { value: this.id, text: formattedText }).appendTo(needSelect);
           });
-$('#needSelectId').select2();
+          $('<option />', { value: none, text: 'Need not listed' }).appendTo(needSelect);
+          $('#needSelectId').select2();
 
         });
     };

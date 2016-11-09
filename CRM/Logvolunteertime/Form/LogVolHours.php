@@ -193,12 +193,33 @@ class CRM_Logvolunteertime_Form_LogVolHours extends CRM_Core_Form {
     //Create or Update volunteer assingment record
     // TODO: what if there is more than one assignment
     $assignmentParams = array(
-      'volunteer_need_id' => $values['volunteer_need_text'],
       'assignee_contact_id' => $individual['id'],
       'time_completed_minutes' => $values['hours_logged'],
       'status_id' => 2,
       'activity_type_id' => 65,
     );
+    if ($values['volunteer_need_text'] == 'none') {
+      try {
+        $newNeed = civicrm_api3('VolunteerNeed', 'create', array(
+          'project_id' => $values['volunteer_project_select'],
+          'role_id' => "Logged Thru Vol Hours Form",
+          'visibility_id' => "admin",
+        ));
+      }
+      catch (CiviCRM_API3_Exception $e) {
+        $error = $e->getMessage();
+        CRM_Core_Error::debug_log_message(ts('API Error %1', array(
+          'domain' => 'com.aghstrategies.logvolunteertime',
+          1 => $error,
+        )));
+      }
+      if (!empty($newNeed['id'])) {
+        $assignmentParams['volunteer_need_id'] = $newNeed['id'];
+      }
+    }
+    else {
+      $assignmentParams['volunteer_need_id'] = $values['volunteer_need_text'];
+    }
     if (!empty($assignment['values'])) {
       $assignmentParams['id'] = $assignment['id'];
     }
