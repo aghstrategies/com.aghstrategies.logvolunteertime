@@ -5,6 +5,7 @@ CRM.$(function ($) {
       $('#needSelectId').crmEntityRef({
         entity: 'VolunteerNeed',
         api: {
+          params: { project_id: $volProjectId },
           search_field: 'role_label',
         },
         select: { minimumInputLength: 0 },
