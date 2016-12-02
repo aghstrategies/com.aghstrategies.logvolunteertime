@@ -6,7 +6,7 @@ CRM.$(function ($) {
         entity: 'VolunteerNeed',
         api: {
           params: { project_id: $volProjectId },
-          search_field: 'role_label',
+          description_field: ['display_time', 'role_description'],
         },
         select: { minimumInputLength: 0 },
         create: true,
