@@ -7,10 +7,16 @@ CRM.$(function ($) {
         api: {
           params: { project_id: $volProjectId },
           description_field: ['display_time', 'role_description'],
+          label_field: 'role_label',
         },
-        select: { minimumInputLength: 0 },
-        create: true,
-        placeholder: 'Select a Need',
+
+        select: {
+          // no searchbox
+          // minimumResultsForSearch: -1,
+          // infinite scrolling
+          minimumInputLength: 0,
+          placeholder: '- Select a Volunteer Need -',
+        },
       });
     };
 
