@@ -19,7 +19,6 @@ class CRM_Logvolunteertime_Form_LogVolHours extends CRM_Core_Form {
    * @return [type] [description]
    */
   public function buildQuickForm() {
-
     $this->add(
       'text',
       'first_name',
@@ -55,18 +54,19 @@ class CRM_Logvolunteertime_Form_LogVolHours extends CRM_Core_Form {
       'Please enter your email',
       'required'
     );
-
-    $this->add(
-      // field type
-      'select',
-      // field name
-      'volunteer_project_select',
-      // field label
-      'Volunteer Project',
-      // list of options
-      $this->getProjectOptions(),
-      // is required
-      TRUE
+    $this->addEntityRef('volunteer_project_select', ts('Volunteer Project'), array(
+      'entity' => 'volunteer_project',
+      'api' => array(
+        // 'params' => $needParams,
+        'label_field' => 'title',
+      ),
+      // 'placeholder' => ts(' - Select A Volunteer Project - '),
+      'select' => array(
+        'minimumInputLength' => 0,
+        'minimumResultsForSearch' => -1,
+      ),
+    ),
+    TRUE
     );
 
     $this->add(
@@ -136,11 +136,15 @@ class CRM_Logvolunteertime_Form_LogVolHours extends CRM_Core_Form {
     }
     //set default Project if vid exsisits
     if (!empty($_REQUEST['vid'])) {
-      $defaults['volunteer_project_select'] = $_REQUEST['vid'];
+      $vid = $_REQUEST['vid'];
     }
+    else {
+      $vid = 0;
+    }
+    CRM_Core_Resources::singleton()->addVars('LogVolHours', array('vid' => $vid));;
+
     $this->setDefaults($defaults);
-    // print_r($currentUser['values'][0]['first_name']);
-    // die();
+
     parent::buildQuickForm();
 
   }
@@ -241,31 +245,6 @@ class CRM_Logvolunteertime_Form_LogVolHours extends CRM_Core_Form {
     CRM_Utils_System::redirect($url);
 
     parent::postProcess();
-  }
-
-  /**
-   * Gets Options for Volunteer Projects select
-   * @return [type] [description]
-   */
-  public function getProjectOptions() {
-    try {
-      $results = civicrm_api3('VolunteerProject', 'get');
-    }
-    catch (CiviCRM_API3_Exception $e) {
-      $error = $e->getMessage();
-      CRM_Core_Error::debug_log_message(ts('API Error %1', array(
-        'domain' => 'com.aghstrategies.logvolunteertime',
-        1 => $error,
-      )));
-    }
-    $projects = $results['values'];
-    $options = array('' => ts('- select -'));
-    if (!empty($projects)) {
-      foreach ($projects as $project) {
-        $options[$project['id']] = ts($project['title']);
-      }
-    }
-    return $options;
   }
 
   /**
