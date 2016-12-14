@@ -57,7 +57,8 @@ class CRM_Logvolunteertime_Form_LogVolHours extends CRM_Core_Form {
     $this->addEntityRef('volunteer_project_select', ts('Volunteer Project'), array(
       'entity' => 'volunteer_project',
       'api' => array(
-        // 'params' => $needParams,
+        'params' => array('is_active'=> 1),
+        'description_field' => '',
         'label_field' => 'title',
       ),
       // 'placeholder' => ts(' - Select A Volunteer Project - '),
