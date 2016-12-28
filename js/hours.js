@@ -13,7 +13,8 @@ CRM.$(function ($) {
         $('#needSelectId').crmEntityRef({
           entity: 'VolunteerNeed',
           api: {
-            params: { project_id: $volProjectId },
+            extra: ["is_flexible","role_id","role_label","role_description", "start_time", "display_time"],
+            params: {options: {'sort':'start_time DESC'}, project_id: $volProjectId },
             description_field: ['display_time', 'role_description'],
             label_field: 'role_label',
           },
